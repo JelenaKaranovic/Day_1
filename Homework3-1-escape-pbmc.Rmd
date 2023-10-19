@@ -1,0 +1,99 @@
+Homework 3-1-escape-pbmc-Jelena Karanovic
+
+Loading Libraries
+```{r}
+suppressPackageStartupMessages(library(escape))
+suppressPackageStartupMessages(library(Seurat))
+suppressPackageStartupMessages(library(dittoSeq))
+suppressPackageStartupMessages(library(ggplot2))
+```
+
+Loading color palette
+```{r}
+colorblind_vector <- colorRampPalette(rev(c("#0D0887FF", "#47039FFF", 
+                                            "#7301A8FF", "#9C179EFF", "#BD3786FF", "#D8576BFF",
+                                            "#ED7953FF","#FA9E3BFF", "#FDC926FF", "#F0F921FF")))
+```
+
+Loading Processed Single-Cell Data (.rds data pbmc from the Day1)
+```{r}
+seurat_ex <- readRDS("C:/Users/Jelena/Desktop/Bioinformatics workshop/Day 1/pbmc3k_final.rds")
+seurat_ex <- UpdateSeuratObject(seurat_ex)
+DimPlot(seurat_ex, label = T) + NoLegend()
+```
+
+Getting Gene Sets - Option 1: Molecular Signture Database - from C5 gene ontology (enrichment was too long and my computer started to warm, so I returned and selected H)
+```{r}
+gene.sets <- getGeneSets(library = "H")
+```
+
+Enrichment
+```{r}
+ES <- enrichIt(obj = seurat_ex, 
+               gene.sets = gene.sets, 
+               groups = 1000, cores = 4, 
+               min.size = NULL)
+head(ES)
+```
+Add metadata
+```{r}
+seurat_ex <- AddMetaData(seurat_ex, ES)
+head(seurat_ex)
+```
+Visualizations
+The Heatmap (reduced code)
+```{r}
+dittoHeatmap(seurat_ex, genes = NULL, metas = names(ES),
+             cluster_cols = TRUE,
+             fontsize = 7)
+```
+Hex Density Enrichment Plots (without group=Type)
+Pathway HALLMARK_DNA_REPAIR
+```{r}
+ES2 <- data.frame(seurat_ex[[]], Idents(seurat_ex))
+colnames(ES2)[ncol(ES2)] <- "cluster"
+ridgeEnrichment(ES2, gene.set = "HALLMARK_DNA_REPAIR", add.rug = TRUE)
+```
+
+Hex Density Enrichment Plots (without group=Type)
+Pathway HALLMARK_ANGIOGENESIS
+```{r}
+ES2 <- data.frame(seurat_ex[[]], Idents(seurat_ex))
+colnames(ES2)[ncol(ES2)] <- "cluster"
+ridgeEnrichment(ES2, gene.set = "HALLMARK_ANGIOGENESIS", add.rug = TRUE)
+```
+Hex Density Enrichment Plots (without group=Type)
+Pathway HALLMARK_APOPTOSIS
+```{r}
+ES2 <- data.frame(seurat_ex[[]], Idents(seurat_ex))
+colnames(ES2)[ncol(ES2)] <- "cluster"
+ridgeEnrichment(ES2, gene.set = "HALLMARK_APOPTOSIS", add.rug = TRUE)
+```
+Hex Density Enrichment Plots (without group=Type)
+Pathway HALLMARK_CHOLESTEROL_HOMEOSTASIS
+```{r}
+ES2 <- data.frame(seurat_ex[[]], Idents(seurat_ex))
+colnames(ES2)[ncol(ES2)] <- "cluster"
+ridgeEnrichment(ES2, gene.set = "HALLMARK_CHOLESTEROL_HOMEOSTASIS", add.rug = TRUE)
+```
+Hex Density Enrichment Plots (without group=Type)
+Pathway HALLMARK_COAGULATION
+```{r}
+ES2 <- data.frame(seurat_ex[[]], Idents(seurat_ex))
+colnames(ES2)[ncol(ES2)] <- "cluster"
+ridgeEnrichment(ES2, gene.set = "HALLMARK_COAGULATION", add.rug = TRUE)
+```
+Hex Density Enrichment Plots (without group=Type)
+Pathway HALLMARK_COMPLEMENT
+```{r}
+ES2 <- data.frame(seurat_ex[[]], Idents(seurat_ex))
+colnames(ES2)[ncol(ES2)] <- "cluster"
+ridgeEnrichment(ES2, gene.set = "HALLMARK_COMPLEMENT", add.rug = TRUE)
+```
+Hex Density Enrichment Plots (without group=Type)
+Pathway HALLMARK_DNA_REPAIR
+```{r}
+ES2 <- data.frame(seurat_ex[[]], Idents(seurat_ex))
+colnames(ES2)[ncol(ES2)] <- "cluster"
+ridgeEnrichment(ES2, gene.set = "HALLMARK_DNA_REPAIR", add.rug = TRUE)
+```
